@@ -8,7 +8,6 @@ Route::middleware(['throttle:api'])->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('login', [UserController::class, 'login']);
         Route::post('register', [UserController::class, 'register']);
-        Route::post('registrasi', [UserController::class, 'registrasi']);
 
         Route::middleware('auth:sanctum')->group(function () {
             Route::get('me', [UserController::class, 'index']);
