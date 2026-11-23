@@ -15,7 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $bindings = [
-         
+            \App\Interfaces\UserInterface::class => \App\Repositories\UserRepository::class,
+            \App\Interfaces\EmployeInterface::class => \App\Repositories\EmployeeRepository::class,
+            \App\Interfaces\EmployeeInterface::class => \App\Repositories\EmployeeRepository::class,
         ];
 
         foreach ($bindings as $abstract => $concrete) {
