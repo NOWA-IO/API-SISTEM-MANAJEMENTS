@@ -17,6 +17,8 @@ class Employe extends Authenticatable
 
     protected $table = 'users';
 
+    protected string $guard_name = 'web';
+
     protected $keyType = 'string';
     public $incrementing = false;
 

@@ -87,7 +87,10 @@ class EmployeeHandler
         /** @var Employe $employee */
         $employee = $this->repository->store($mapped['payload']);
 
-        $role = Role::firstOrCreate(['name' => $mapped['spatie_role']]);
+        $role = Role::firstOrCreate([
+            'name' => $mapped['spatie_role'],
+            'guard_name' => 'web',
+        ]);
         $employee->assignRole($role);
 
         return $employee;
@@ -107,7 +110,10 @@ class EmployeeHandler
         $employee->update($mapped['payload']);
 
         if (!empty($mapped['spatie_role'])) {
-            $role = Role::firstOrCreate(['name' => $mapped['spatie_role']]);
+            $role = Role::firstOrCreate([
+                'name' => $mapped['spatie_role'],
+                'guard_name' => 'web',
+            ]);
             $employee->syncRoles([$role]);
         }
 

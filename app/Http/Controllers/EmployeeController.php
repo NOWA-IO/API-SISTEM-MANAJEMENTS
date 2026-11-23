@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Helpers\PaginateHelper;
@@ -22,7 +21,7 @@ class EmployeeController extends Controller
     public function __construct(EmployeeRepository $repository, EmployeeHandler $handler)
     {
         $this->repository = $repository;
-        $this->handler = $handler;
+        $this->handler    = $handler;
     }
 
     /**
@@ -34,34 +33,22 @@ class EmployeeController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-            $employees = $this->repository->get();
-            return ResponseHelper::success(EmployeeResource::collection($employees), 'Data karyawan berhasil diambil.');
-        } catch (\Throwable $th) {
-            return ResponseHelper::error(message: $th->getMessage());
-        }
-    }
-
-    /**
-     * Get list employee with paginate.
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function listPaginate(Request $request): JsonResponse
-    {
-        try {
-            $employees = $this->repository->customPaginate($request, $request->paginate ?? 10);
-
+            $perPage = $request->get('per_page', 10);
+            $filters = $request->only([
+                'sort_by',
+                'sort_dir',
+                'search',
+                'date_from',
+                'date_to',
+            ]);
+            $employees = $this->repository->getAllEmployee($filters, $perPage);
             return ResponseHelper::success(
-                EmployeePaginateResource::make($employees, PaginateHelper::getPaginate($employees)),
-                'Data karyawan berhasil diambil.',
-                pagination: true
+                EmployeePaginateResource::make($employees, PaginateHelper::getPaginate($employees))
             );
         } catch (\Throwable $th) {
             return ResponseHelper::error(message: $th->getMessage());
         }
     }
-
     /**
      * Store a newly created employee (can assign admin / employee role).
      *
@@ -110,7 +97,7 @@ class EmployeeController extends Controller
         DB::beginTransaction();
         try {
             /** @var Employe $employee */
-            $employee = $this->repository->show($id);
+            $employee        = $this->repository->show($id);
             $updatedEmployee = $this->handler->handleUpdate($request, $employee);
 
             DB::commit();
@@ -141,4 +128,3 @@ class EmployeeController extends Controller
         }
     }
 }
-

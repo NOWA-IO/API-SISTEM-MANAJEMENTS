@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Helpers\QueryFilterHelper;
 use App\Interfaces\EmployeInterface;
 use App\Models\Employe;
 use Illuminate\Http\Request;
@@ -39,5 +40,21 @@ class EmployeeRepository extends BaseRepository implements EmployeInterface
         }
 
         return $query->paginate($pagination);
+    }
+
+      public function paginate(int $pagination = 10): LengthAwarePaginator
+    {
+        return $this->model->orderBy('created_at', 'desc')->paginate($pagination);
+    }
+
+    public function getAllEmployee(array $filters = [], int $perPage = 10)
+    {
+        $query = $this->model->newQuery();
+        $searchColumn = ['name', 'email'];
+
+        QueryFilterHelper::applyFilters($query, $filters, $searchColumn);
+        QueryFilterHelper::applySorting($query, $filters);
+
+        return $query->paginate($perPage);
     }
 }

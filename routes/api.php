@@ -22,7 +22,6 @@ Route::middleware(['throttle:api'])->group(function () {
 
         Route::middleware(['role:' . UserRoleEnum::ADMIN->value])->group(function () {
             // route admin  
-            Route::get('employees/list-data-paginate', [EmployeeController::class, 'listPaginate']);
             Route::apiResource('employees', EmployeeController::class);
         });
 

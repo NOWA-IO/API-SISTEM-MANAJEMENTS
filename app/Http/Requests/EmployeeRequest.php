@@ -32,7 +32,7 @@ class EmployeeRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . ($employeeId ?? ''),
             'password' => $this->isMethod('post') ? 'required|string|min:8' : 'nullable|string|min:8',
-            'role' => 'sometimes|string|in:admin,employee,seller,Admin,Employee,Seller',
+            'role' => 'sometimes|string|in:employee,seller',
         ];
     }
 
@@ -51,7 +51,7 @@ class EmployeeRequest extends FormRequest
             'password.string' => 'Kata sandi harus berupa teks.',
             'password.min' => 'Kata sandi minimal 8 karakter.',
 
-            'role.in' => 'Role tidak valid. Pilihan role yang tersedia: admin, employee, seller.',
+            'role.in' => 'Role tidak valid. Pilihan role yang tersedia: employee, seller.',
         ];
     }
 
