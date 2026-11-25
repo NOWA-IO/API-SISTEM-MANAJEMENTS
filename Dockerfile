@@ -1,14 +1,17 @@
+
 FROM dunglas/frankenphp:1-php8.4-bookworm AS base
 
 RUN cp "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
-    && install-php-extensions intl zip
+    && install-php-extensions intl zip pdo_pgsql
 
 WORKDIR /app
 
 FROM base AS dependencies
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
 COPY composer.json composer.lock ./
+
 RUN composer install \
     --no-dev \
     --no-interaction \
@@ -18,6 +21,7 @@ RUN composer install \
     --prefer-dist
 
 COPY . .
+
 RUN mkdir -p \
         storage/framework/cache \
         storage/framework/sessions \
@@ -28,6 +32,7 @@ RUN mkdir -p \
 FROM base AS runtime
 
 COPY --from=dependencies --chown=www-data:www-data /app /app
+
 COPY --chown=www-data:www-data Caddyfile /etc/frankenphp/Caddyfile
 
 RUN setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/frankenphp \
