@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
             \App\Interfaces\UserInterface::class => \App\Repositories\UserRepository::class,
             \App\Interfaces\EmployeInterface::class => \App\Repositories\EmployeeRepository::class,
             \App\Interfaces\EmployeeInterface::class => \App\Repositories\EmployeeRepository::class,
+            \App\Interfaces\ProductInterface::class => \App\Repositories\ProductRepository::class,
         ];
 
         foreach ($bindings as $abstract => $concrete) {
