@@ -2,6 +2,7 @@
 
 use App\Enums\UserRoleEnum;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeEarningController;
 use App\Http\Controllers\FormulaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
@@ -28,6 +29,7 @@ Route::middleware(['throttle:api'])->group(function () {
             Route::apiResource('employees', EmployeeController::class);
             Route::apiResource('products', ProductController::class);
             Route::apiResource('formulas', FormulaController::class);
+            Route::apiResource('employee-earnings', EmployeeEarningController::class);
         });
 
         Route::middleware(['role:' . UserRoleEnum::EMPLOYEE->value])->group(function () {
