@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Interfaces\EmployeInterface::class => \App\Repositories\EmployeeRepository::class,
             \App\Interfaces\EmployeeInterface::class => \App\Repositories\EmployeeRepository::class,
             \App\Interfaces\ProductInterface::class => \App\Repositories\ProductRepository::class,
+<<<<<<< HEAD
+=======
+            \App\Interfaces\FormulaInterface::class => \App\Repositories\FormulaRepository::class,
+>>>>>>> 22570f13b564ab9f7273958c4f1ec2607bb21377
         ];
 
         foreach ($bindings as $abstract => $concrete) {

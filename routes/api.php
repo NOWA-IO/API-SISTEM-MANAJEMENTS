@@ -2,6 +2,7 @@
 
 use App\Enums\UserRoleEnum;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FormulaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,8 @@ Route::middleware(['throttle:api'])->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('users/list-data-paginate', [UserController::class, 'listPaginate']);
         Route::apiResource('users', UserController::class);
+        Route::apiResource('products', ProductController::class);
+        Route::apiResource('formulas', FormulaController::class);
 
         Route::middleware(['role:' . UserRoleEnum::ADMIN->value])->group(function () {
             // route admin  
