@@ -10,10 +10,7 @@ use App\Resources\Products\ProductPaginateResource;
 use App\Resources\Products\ProductResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Auth;
-=======
->>>>>>> 22570f13b564ab9f7273958c4f1ec2607bb21377
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -26,11 +23,7 @@ class ProductController extends Controller
     }
 
     /**
-<<<<<<< HEAD
      * Display a listing of products.
-=======
-     * Display a listing of products with filters, sorting, and pagination.
->>>>>>> 22570f13b564ab9f7273958c4f1ec2607bb21377
      *
      * @param Request $request
      * @return JsonResponse
@@ -38,7 +31,6 @@ class ProductController extends Controller
     public function index(Request $request): JsonResponse
     {
         try {
-<<<<<<< HEAD
             $perPage = (int) $request->get('per_page', 10);
             $filters = [
                 'search' => $request->input('search', $request->input('q', $request->input('keyword'))),
@@ -55,23 +47,6 @@ class ProductController extends Controller
                 ProductPaginateResource::make($products, PaginateHelper::getPaginate($products)),
                 'Data barang berhasil diambil.',
                 pagination: true
-=======
-            $perPage = $request->get('per_page', 10);
-            $filters = $request->only([
-                'sort_by',
-                'sort_dir',
-                'search',
-                'category',
-                'date_from',
-                'date_to',
-            ]);
-
-            $products = $this->repository->getAllProduct($filters, $perPage);
-
-            return ResponseHelper::success(
-                ProductPaginateResource::make($products, PaginateHelper::getPaginate($products)),
-                'Data barang berhasil diambil.'
->>>>>>> 22570f13b564ab9f7273958c4f1ec2607bb21377
             );
         } catch (\Throwable $th) {
             return ResponseHelper::error(message: $th->getMessage());
@@ -89,11 +64,7 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $payload = $request->validated();
-<<<<<<< HEAD
             $payload['user_id'] = Auth::id();
-=======
-            $payload['user_id'] = auth()->id();
->>>>>>> 22570f13b564ab9f7273958c4f1ec2607bb21377
 
             $product = $this->repository->store($payload);
 
@@ -135,18 +106,11 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $product = $this->repository->show($id);
-<<<<<<< HEAD
             $this->repository->update($id, $request->validated());
             $product->refresh()->load('user');
 
             DB::commit();
             return ResponseHelper::success(ProductResource::make($product), 'Barang berhasil diperbarui.');
-=======
-            $product->update($request->validated());
-
-            DB::commit();
-            return ResponseHelper::success(ProductResource::make($product->fresh()->load('user')), 'Barang berhasil diperbarui.');
->>>>>>> 22570f13b564ab9f7273958c4f1ec2607bb21377
         } catch (\Throwable $th) {
             DB::rollBack();
             return ResponseHelper::error(message: 'Gagal memperbarui barang: ' . $th->getMessage());
