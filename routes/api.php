@@ -21,13 +21,13 @@ Route::middleware(['throttle:api'])->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('users/list-data-paginate', [UserController::class, 'listPaginate']);
         Route::apiResource('users', UserController::class);
-        Route::apiResource('products', ProductController::class);
-        Route::apiResource('formulas', FormulaController::class);
+        
 
         Route::middleware(['role:' . UserRoleEnum::ADMIN->value])->group(function () {
             // route admin  
             Route::apiResource('employees', EmployeeController::class);
             Route::apiResource('products', ProductController::class);
+            Route::apiResource('formulas', FormulaController::class);
         });
 
         Route::middleware(['role:' . UserRoleEnum::EMPLOYEE->value])->group(function () {
